@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Sidebar from './Sidebar'
 import Header from './Header'
 import BottomNav from './BottomNav'
 import MobileDrawer from './MobileDrawer'
 import useTheme from '../hooks/useTheme'
+import { useLocation } from "react-router-dom";
 import { DEFAULT_ACTIVE_NAV } from '../nav-items'
 import { Outlet } from 'react-router-dom'
 
@@ -16,7 +17,12 @@ export default function AppShell({ children }) {
   const [activeNav, setActiveNav] = useState(DEFAULT_ACTIVE_NAV)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const { isDark, toggleTheme } = useTheme()
-
+  const location = useLocation();
+  useEffect(() => {
+    const currentNav = location.pathname.split("/")[1] || "dashboard";
+  
+    setActiveNav(currentNav);
+  }, [location.pathname]);
   const handleCreateProject = () => {
     
   }

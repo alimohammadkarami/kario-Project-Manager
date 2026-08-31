@@ -1,6 +1,7 @@
 import AppShell from './components/AppShell'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ProjectsEmpty } from './components/ProjectsEmpty'
+import { Home } from './components/Home'
 
 export default function App() {
   return (
@@ -14,7 +15,7 @@ export default function App() {
 
           {/* صفحات داخل AppShell */}
           <Route element={<AppShell />}>
-            <Route path="/" element={<div>home</div>} />
+            <Route path="/" element={<Home />} />
             <Route path="/projects" element={<ProjectsEmpty />} />
             <Route path="/tasks" element={<div>tasks</div>} />
             <Route path="/profile" element={<div>profile</div>} />
