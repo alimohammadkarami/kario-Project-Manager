@@ -23,6 +23,7 @@ export default function AppShell({ children }) {
   
     setActiveNav(currentNav);
   }, [location.pathname]);
+  
   const handleCreateProject = () => {
     
   }

@@ -14,7 +14,7 @@ export default function BottomNav({ activeNav, onNavigate, onOpenDrawer, drawerO
             <button
               key={id}
               type="button"
-              onClick={() => onNavigate(id)}
+              onClick={() => location.href = `/${id}`}
               aria-current={active ? 'page' : undefined}
               className={`relative flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-2xl px-1 py-2 text-[10px] leading-none transition-all duration-300 ease-out active:scale-95 ${
                 active

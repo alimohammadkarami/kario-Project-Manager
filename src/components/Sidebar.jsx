@@ -53,7 +53,7 @@ export default function Sidebar({
             <button
               key={id}
               type="button"
-              onClick={() => onNavigate(id)}
+              onClick={() => location.href = `/${id}`}
               aria-current={active ? 'page' : undefined}
               className={`flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm transition-colors ${
                 active
