@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode: toggle by adding/removing `dark` on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand palette sampled from the reference design */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #dfe7fe;
+  --color-brand-200: #c7d5fd;
+  --color-brand-300: #a3b9fb;
+  --color-brand-400: #6f8ff5;
+  --color-brand-500: #3d64ec;
+  --color-brand-600: #1b51e5;
+  --color-brand-700: #153fc0;
+  --color-brand-800: #14349a;
+  --color-brand-900: #142e7a;
+
+  --color-accent-400: #f7cc7f;
+  --color-accent-500: #f4be5e;
+  --color-accent-600: #e0a63f;
+
+  --color-app-bg: #eaecf5;
+  --color-app-bg-dark: #0f1220;
+  --color-surface-dark: #171b2e;
+  --color-surface-dark-soft: #1e2338;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar - subtle, matches the app aesthetic */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-brand-200) transparent;
+}
+
+.dark * {
+  scrollbar-color: #0f1220 transparent;
+}
+
+.mobile-sheet {
+  transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-sheet {
+    transition-duration: 0.01ms;
+  }
+}
