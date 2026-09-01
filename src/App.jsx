@@ -15,7 +15,7 @@ export default function App() {
 
           {/* صفحات داخل AppShell */}
           <Route element={<AppShell />}>
-            <Route path="/dashboard" element={<Home />} />
+            <Route path="/dashboard"  element={<Home />} />
             <Route path="/projects" element={<ProjectsEmpty />} />
             <Route path="/tasks" element={<div>tasks</div>} />
             <Route path="/profile" element={<div>profile</div>} />

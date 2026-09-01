@@ -25,6 +25,7 @@ export default function MobileDrawer({
   isDark,
   onToggleTheme,
   onCreateProject,
+  onOpenSupport,
   user,
 }) {
   const { date, time } = usePersianClock()
@@ -170,6 +171,14 @@ export default function MobileDrawer({
             <button
               key={id}
               type="button"
+              onClick={
+                id === 'support'
+                  ? () => {
+                      onClose()
+                      onOpenSupport?.()
+                    }
+                  : undefined
+              }
               className="flex items-center justify-between rounded-2xl px-3.5 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-white/5"
             >
               <span className="flex items-center gap-3">

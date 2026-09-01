@@ -7,6 +7,7 @@ import useTheme from '../hooks/useTheme'
 import { useLocation } from "react-router-dom";
 import { DEFAULT_ACTIVE_NAV } from '../nav-items'
 import { Outlet } from 'react-router-dom'
+import SupportModal from './SupportModal'
 
 const CURRENT_USER = {
   name: 'علی محمد کرمی',
@@ -16,6 +17,7 @@ const CURRENT_USER = {
 export default function AppShell({ children }) {
   const [activeNav, setActiveNav] = useState(DEFAULT_ACTIVE_NAV)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [supportOpen, setSupportOpen] = useState(false)
   const { isDark, toggleTheme } = useTheme()
   const location = useLocation();
   useEffect(() => {
@@ -37,6 +39,7 @@ export default function AppShell({ children }) {
           isDark={isDark}
           onToggleTheme={toggleTheme}
           onCreateProject={handleCreateProject}
+          onOpenSupport={() => setSupportOpen(true)}
         />
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
@@ -65,8 +68,11 @@ export default function AppShell({ children }) {
         isDark={isDark}
         onToggleTheme={toggleTheme}
         onCreateProject={handleCreateProject}
+        onOpenSupport={() => setSupportOpen(true)}
         user={CURRENT_USER}
       />
+
+      <SupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </div>
   )
 }

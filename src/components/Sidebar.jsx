@@ -15,6 +15,7 @@ export default function Sidebar({
   isDark,
   onToggleTheme,
   onCreateProject,
+  onOpenSupport,
 }) {
   const { date, time } = usePersianClock()
 
@@ -75,6 +76,7 @@ export default function Sidebar({
           <button
             key={id}
             type="button"
+            onClick={id === 'support' ? onOpenSupport : undefined}
             className="flex items-center justify-between rounded-xl px-4 py-2.5 text-sm text-slate-500 transition-colors hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-white/5"
           >
             <span className="flex items-center gap-2.5">

@@ -5,9 +5,9 @@ export default function Header({ activeNav, onOpenDrawer, user }) {
   const activeItem = NAV_ITEMS.find((item) => item.id === activeNav)
 
   return (
-    <header className="relative">
+    <header className="relative" dir='ltr'>
       <div className="flex items-center justify-between rounded-3xl bg-white px-4 py-3 shadow-sm shadow-slate-200/60 dark:bg-surface-dark dark:shadow-none sm:px-6">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3" dir='rtl'>
           <button
             type="button"
             onClick={onOpenDrawer}
@@ -34,7 +34,7 @@ export default function Header({ activeNav, onOpenDrawer, user }) {
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-sm" dir='rtl'>
           <FolderIcon className="h-5 w-5 text-brand-600" />
           <span className="font-medium text-slate-700 dark:text-slate-200">میز کار</span>
           {activeNav !== 'dashboard' && (
