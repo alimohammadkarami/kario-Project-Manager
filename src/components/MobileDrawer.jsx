@@ -13,8 +13,7 @@ import { NAV_ITEMS } from '../nav-items'
 import usePersianClock from '../hooks/usePersianClock'
 
 const SECONDARY_ITEMS = [
-  { id: 'profile', label: 'پروفایل', icon: UserIcon },
-  { id: 'support', label: 'پشتیبانی', icon: HeadsetIcon },
+  { id: 'support', label: 'پشتیبانی', icon: HeadsetIcon }
 ]
 
 export default function MobileDrawer({
