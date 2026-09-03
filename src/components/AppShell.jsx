@@ -1,34 +1,46 @@
-import { useEffect, useState } from 'react'
-import Sidebar from './Sidebar'
-import Header from './Header'
-import BottomNav from './BottomNav'
-import MobileDrawer from './MobileDrawer'
-import useTheme from '../hooks/useTheme'
+import { useEffect, useState } from "react";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import BottomNav from "./BottomNav";
+import MobileDrawer from "./MobileDrawer";
+import useTheme from "../hooks/useTheme";
 import { useLocation } from "react-router-dom";
-import { DEFAULT_ACTIVE_NAV } from '../nav-items'
-import { Outlet } from 'react-router-dom'
-import SupportModal from './SupportModal'
+import { DEFAULT_ACTIVE_NAV } from "../nav-items";
+import { Outlet } from "react-router-dom";
+import SupportModal from "./SupportModal";
+import ProfileDrawer from "./ProfileDrawer";
 
 const CURRENT_USER = {
-  name: 'علی محمد کرمی',
-  email: 'alikaramitd@gmail.com',
-}
+  name: "علی محمد کرمی",
+  email: "alikaramitd@gmail.com",
+};
 
 export default function AppShell({ children }) {
-  const [activeNav, setActiveNav] = useState(DEFAULT_ACTIVE_NAV)
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const [supportOpen, setSupportOpen] = useState(false)
-  const { isDark, toggleTheme } = useTheme()
+  const [activeNav, setActiveNav] = useState(DEFAULT_ACTIVE_NAV);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
+  const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
+  const handleEditProfile = () => {
+    console.log("Edit profile");
+  };
+
+  const handleResetPassword = () => {
+    console.log("Reset password");
+  };
+
+  const handleLogout = () => {
+    console.log("Logout");
+  };
   const location = useLocation();
   useEffect(() => {
-    const currentNav = location.pathname.split("/")[1] || "dashboard";
-  
+    const currentNav = location.pathname.split("/")[1] || "";
+    console.log(currentNav);
+
     setActiveNav(currentNav);
   }, [location.pathname]);
-  
-  const handleCreateProject = () => {
-    
-  }
+
+  const handleCreateProject = () => {};
 
   return (
     <div className="min-h-screen bg-app-bg dark:bg-app-bg-dark">
@@ -46,10 +58,23 @@ export default function AppShell({ children }) {
           <Header
             activeNav={activeNav}
             onOpenDrawer={() => setDrawerOpen(true)}
+            onOpenProfile={() => setProfileDrawerOpen(true)}
             user={CURRENT_USER}
+            profileDrawer={
+              <ProfileDrawer
+                isOpen={profileDrawerOpen}
+                onClose={() => setProfileDrawerOpen(false)}
+                user={CURRENT_USER}
+                onEditProfile={handleEditProfile}
+                onResetPassword={handleResetPassword}
+                onLogout={handleLogout}
+              />
+            }
           />
 
-          <main className="flex-1 pb-24 lg:pb-3 justify-center items-center"><Outlet /></main>
+          <main className="flex-1 pb-24 lg:pb-3 justify-center items-center">
+            <Outlet />
+          </main>
         </div>
       </div>
 
@@ -74,5 +99,5 @@ export default function AppShell({ children }) {
 
       <SupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </div>
-  )
+  );
 }

@@ -3,6 +3,22 @@
 /* Enable class-based dark mode: toggle by adding/removing `dark` on <html> */
 @custom-variant dark (&:where(.dark, .dark *));
 
+@keyframes profile-drawer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@utility animate-profile-drawer {
+  animation: profile-drawer-in 160ms ease-out;
+}
+
 @theme {
   --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
 
