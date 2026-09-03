@@ -71,11 +71,12 @@ function ProfileDrawer({
           rounded-t-2xl
           rounded-b-3xl
           border border-slate-100
-          bg-white
+          bg-white/40
           shadow-xl shadow-slate-300/25
           dark:border-white/6
-          dark:bg-surface-dark
+          dark:bg-surface-dark/85
           dark:shadow-black/25
+          backdrop-blur-lg
         "
       >
         {/* Profile header */}

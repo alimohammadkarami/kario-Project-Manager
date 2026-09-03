@@ -16,7 +16,6 @@ export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , 
           >
             <ProfileIcon className="h-6 w-6" />
           </button>
-
           <button
             type="button"
             onClick={onOpenProfile}
