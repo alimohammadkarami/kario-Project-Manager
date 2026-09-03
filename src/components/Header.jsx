@@ -1,4 +1,4 @@
-import { AvatarGlyph, ChevronDownIcon, FolderIcon, MenuIcon } from "./icons";
+import { AvatarGlyph, ChevronDownIcon, FolderIcon, MenuIcon, ProfileIcon } from "./icons";
 import { NAV_ITEMS } from "../nav-items";
 
 export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , profileDrawer}) {
@@ -10,11 +10,11 @@ export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , 
         <div className="flex items-center gap-3" dir="rtl">
           <button
             type="button"
-            onClick={onOpenDrawer}
+            onClick={onOpenProfile}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 dark:bg-white/8 dark:text-slate-200 dark:hover:bg-white/12 lg:hidden"
             aria-label="باز کردن منو"
           >
-            <MenuIcon className="h-5 w-5" />
+            <ProfileIcon className="h-6 w-6" />
           </button>
 
           <button
