@@ -9,6 +9,7 @@ import { DEFAULT_ACTIVE_NAV } from "../nav-items";
 import { Outlet } from "react-router-dom";
 import SupportModal from "./SupportModal";
 import ProfileDrawer from "./ProfileDrawer";
+import EditProfileModal from "./EditProfileModal";
 
 const CURRENT_USER = {
   name: "علی محمد کرمی",
@@ -21,10 +22,14 @@ export default function AppShell({ children }) {
   const [supportOpen, setSupportOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const handleEditProfile = () => {
-    console.log("Edit profile");
+    setProfileDrawerOpen(false);
+    setEditModalOpen(true);
   };
-
+  const handleSaveProfile = async (fullName) => {
+    console.log("New name:", fullName);
+  };
   const handleResetPassword = () => {
     console.log("Reset password");
   };
@@ -68,6 +73,14 @@ export default function AppShell({ children }) {
                 onEditProfile={handleEditProfile}
                 onResetPassword={handleResetPassword}
                 onLogout={handleLogout}
+              />
+            }
+            editModal={
+              <EditProfileModal 
+                isOpen={editModalOpen}
+                onClose={() => setEditModalOpen(false)}
+                user={CURRENT_USER}
+                onSave={handleSaveProfile}
               />
             }
           />
