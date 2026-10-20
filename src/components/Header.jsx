@@ -1,7 +1,7 @@
 import { AvatarGlyph, ChevronDownIcon, FolderIcon, MenuIcon, ProfileIcon } from "./icons";
 import { NAV_ITEMS } from "../nav-items";
 
-export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , profileDrawer , editModal}) {
+export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , profileDrawer , editModal , passModal}) {
   const activeItem = NAV_ITEMS.find((item) => item.id === activeNav);
 
   return (
@@ -38,6 +38,7 @@ export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , 
           </button>
           {profileDrawer}
           {editModal}
+          {passModal}
         </div>
          
         <div className="flex items-center gap-2 text-sm" dir="rtl">

@@ -10,6 +10,7 @@ import { Outlet } from "react-router-dom";
 import SupportModal from "./SupportModal";
 import ProfileDrawer from "./ProfileDrawer";
 import EditProfileModal from "./EditProfileModal";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 const CURRENT_USER = {
   name: "علی محمد کرمی",
@@ -23,6 +24,7 @@ export default function AppShell({ children }) {
   const { isDark, toggleTheme } = useTheme();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const handleEditProfile = () => {
     setProfileDrawerOpen(false);
     setEditModalOpen(true);
@@ -31,7 +33,8 @@ export default function AppShell({ children }) {
     console.log("New name:", fullName);
   };
   const handleResetPassword = () => {
-    console.log("Reset password");
+    setProfileDrawerOpen(false);
+    setIsPasswordModalOpen(true);
   };
 
   const handleLogout = () => {
@@ -76,11 +79,18 @@ export default function AppShell({ children }) {
               />
             }
             editModal={
-              <EditProfileModal 
+              <EditProfileModal
                 isOpen={editModalOpen}
                 onClose={() => setEditModalOpen(false)}
                 user={CURRENT_USER}
                 onSave={handleSaveProfile}
+              />
+            }
+            passModal={
+              <ChangePasswordModal
+                isOpen={isPasswordModalOpen}
+                onClose={() => setIsPasswordModalOpen(false)}
+                onSave={(() => setIsPasswordModalOpen(false))}
               />
             }
           />
