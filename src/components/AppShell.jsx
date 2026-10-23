@@ -11,6 +11,7 @@ import SupportModal from "./SupportModal";
 import ProfileDrawer from "./ProfileDrawer";
 import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
+import CreateProjectModal from "./CreateProjectModal";
 
 const CURRENT_USER = {
   name: "علی محمد کرمی",
@@ -25,6 +26,7 @@ export default function AppShell({ children }) {
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const handleEditProfile = () => {
     setProfileDrawerOpen(false);
     setEditModalOpen(true);
@@ -48,8 +50,10 @@ export default function AppShell({ children }) {
     setActiveNav(currentNav);
   }, [location.pathname]);
 
-  const handleCreateProject = () => {};
-
+  const handleCreateProject = () => {
+      setIsCreateModalOpen(true)
+  };
+      
   return (
     <div className="min-h-screen bg-app-bg dark:bg-app-bg-dark">
       <div className="flex gap-3 p-3">
@@ -121,6 +125,7 @@ export default function AppShell({ children }) {
       />
 
       <SupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
+      <CreateProjectModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} onSave={handleCreateProject} />
     </div>
   );
 }
