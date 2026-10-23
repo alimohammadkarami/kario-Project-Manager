@@ -12,15 +12,33 @@ export async function registerUser(userData) {
         fullName:userData.name,
         email:userData.email,
         password:userData.password,
-        repass:userData.repass
+        confirmPassword:userData.repass
     }),
   });
 
   const data = await response.json();
-
+  console.log(data)
   if (!response.ok) {
     throw new Error(data.message || 'خطایی در ثبت‌نام رخ داد.');
   }
 
+  return data;
+}
+export async function LoginUser(userData){
+   const response = await fetch(`${API_URL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        email:userData.email,
+        password:userData.password,
+    }),
+  });
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error (data.message || "خطایی رخ داد ");
+  }
   return data;
 }

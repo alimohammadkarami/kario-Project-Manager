@@ -47,7 +47,7 @@ export default function RegisterPage() {
       }
 
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        window.location.href = '/';
       }, 1500);
 
     } catch (err) {

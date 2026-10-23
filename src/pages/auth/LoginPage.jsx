@@ -1,14 +1,47 @@
 import React, { useState } from 'react';
 import AuthLayout from '../../components/auth/AuthLayout';
+import { LoginUser } from '../../services/AuthService';
 
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: '', type: '' });
+  const [formData, setFormData] = useState({
+      email: '',
+      password: '',
+    });
+  const handleChange = (e)=>{
+    setFormData({
+      ...formData , 
+      [e.target.name]:e.target.value
+    });
+  }
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login:', { email, password });
+    setLoading(true);
+    try{
+      const response = await LoginUser(formData);
+      console.log(response);
+      setMessage({ 
+        text: 'ورود با موفقیت انجام شد! در حال انتقال...', 
+        type: 'success' 
+      });
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+      }
+
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1500);
+
+    } catch(err){
+        setMessage({
+          message: err.message || 'خطایی رخ داد ',
+          type:'error'
+        });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -22,7 +55,15 @@ export default function LoginPage() {
           لطفاً ایمیل و رمز عبور خود را وارد کنید
         </p>
       </div>
-
+      {message.text && (
+        <div className={`p-3 rounded-lg text-xs font-medium text-right transition-all duration-300 ${
+          message.type === 'success' 
+            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+            : 'bg-rose-50 text-rose-700 border border-rose-200'
+        }`}>
+          {message.text}
+        </div>
+      )}
       {/* فرم */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2 text-right">
@@ -30,8 +71,9 @@ export default function LoginPage() {
           <input
             type="email"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name='email'
+            value={formData.email}
+            onChange={handleChange}
             placeholder="example@kariu.ir"
             className="w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-3 text-left text-sm text-slate-800 placeholder-slate-400 outline-none transition duration-200 focus:border-blue-600 focus:bg-white focus:ring-2 focus:ring-blue-600/20"
             dir="ltr"
@@ -43,8 +85,9 @@ export default function LoginPage() {
           <input
             type="password"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name='password'
+            value={formData.password}
+            onChange={handleChange}
             placeholder="••••••••"
             className="w-full rounded-lg border border-slate-200 bg-slate-50/50 px-4 py-3 text-left text-sm text-slate-800 placeholder-slate-400 outline-none transition duration-200 focus:border-blue-600 focus:bg-white focus:ring-2 focus:ring-blue-600/20"
             dir="ltr"
