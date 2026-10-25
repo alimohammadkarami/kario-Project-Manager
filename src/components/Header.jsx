@@ -1,7 +1,7 @@
 import { AvatarGlyph, ChevronDownIcon, FolderIcon, MenuIcon, ProfileIcon } from "./icons";
 import { NAV_ITEMS } from "../nav-items";
 
-export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , profileDrawer , editModal , passModal}) {
+export default function Header({ activeNav, onOpenDrawer, onOpenProfile, userName , userEmail , profileDrawer , editModal , passModal}) {
   const activeItem = NAV_ITEMS.find((item) => item.id === activeNav);
 
   return (
@@ -25,13 +25,13 @@ export default function Header({ activeNav, onOpenDrawer, onOpenProfile, user , 
             <AvatarGlyph className="h-9 w-9" />
             <span className="text-right leading-tight">
               <span className="block text-sm font-semibold text-slate-700 dark:text-slate-100">
-                {user.name}
+                {userName}
               </span>
               <span
                 className="block text-xs text-slate-400 dark:text-slate-500"
                 dir="ltr"
               >
-                {user.email}
+                {userEmail}
               </span>
             </span>
             <ChevronDownIcon className="h-4 w-4 text-brand-600" />

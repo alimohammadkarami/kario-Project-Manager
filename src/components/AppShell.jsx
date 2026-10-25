@@ -12,13 +12,17 @@ import ProfileDrawer from "./ProfileDrawer";
 import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
 import CreateProjectModal from "./CreateProjectModal";
+import { ModifyFullname } from "../services/AuthService";
 
 const CURRENT_USER = {
-  name: "علی محمد کرمی",
-  email: "alikaramitd@gmail.com",
+  name: localStorage.getItem("fullName"),
+  email: localStorage.getItem("email"),
 };
 
 export default function AppShell({ children }) {
+  const [currentUser, setCurrentUser] = useState(() => {
+    return (localStorage.getItem("fullName") || "null");
+  });
   const [activeNav, setActiveNav] = useState(DEFAULT_ACTIVE_NAV);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [supportOpen, setSupportOpen] = useState(false);
@@ -27,12 +31,27 @@ export default function AppShell({ children }) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  console.log(currentUser)
   const handleEditProfile = () => {
     setProfileDrawerOpen(false);
     setEditModalOpen(true);
   };
   const handleSaveProfile = async (fullName) => {
     console.log("New name:", fullName);
+    try{
+      const response = await ModifyFullname(fullName);
+    } catch(err) {
+
+      console.log(err.message);
+
+    } finally {
+
+      setEditModalOpen(false);
+      localStorage.setItem("fullName" ,fullName);
+      setCurrentUser(fullName);
+    }
+    
+    
   };
   const handleResetPassword = () => {
     setProfileDrawerOpen(false);
@@ -40,7 +59,8 @@ export default function AppShell({ children }) {
   };
 
   const handleLogout = () => {
-    console.log("Logout");
+    localStorage.removeItem("token");
+    window.location.reload(); 
   };
   const location = useLocation();
   useEffect(() => {
@@ -71,12 +91,14 @@ export default function AppShell({ children }) {
             activeNav={activeNav}
             onOpenDrawer={() => setDrawerOpen(true)}
             onOpenProfile={() => setProfileDrawerOpen(true)}
-            user={CURRENT_USER}
+            userName={currentUser}
+            userEmail={CURRENT_USER.email}
             profileDrawer={
               <ProfileDrawer
                 isOpen={profileDrawerOpen}
                 onClose={() => setProfileDrawerOpen(false)}
-                user={CURRENT_USER}
+                userName={currentUser}
+                userEmail={CURRENT_USER.email}
                 onEditProfile={handleEditProfile}
                 onResetPassword={handleResetPassword}
                 onLogout={handleLogout}

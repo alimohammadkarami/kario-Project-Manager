@@ -26,8 +26,12 @@ export default function LoginPage() {
         text: 'ورود با موفقیت انجام شد! در حال انتقال...', 
         type: 'success' 
       });
-      if (response.token) {
-        localStorage.setItem('token', response.token);
+      if (response.data) {
+        const {  email , avatarName , fullName} = response.data.user
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('email', email);
+        localStorage.setItem('fullName', fullName);
+        localStorage.setItem('avatarName', avatarName);
       }
 
       setTimeout(() => {

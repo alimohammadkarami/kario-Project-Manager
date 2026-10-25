@@ -42,3 +42,21 @@ export async function LoginUser(userData){
   }
   return data;
 }
+export async function ModifyFullname(fullName) {
+  const token = localStorage.getItem("token");
+  const resonse = await fetch(`${API_URL}/modify-info`,{
+    method:"PATCH",
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    },
+    body:JSON.stringify({
+      fullName : fullName
+    })
+  });
+  
+  if(!response.ok){
+    throw new Error (data.message || "خطایی رخ داد ");
+  }
+  return data;
+}

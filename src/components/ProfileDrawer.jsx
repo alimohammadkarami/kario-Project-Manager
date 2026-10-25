@@ -3,7 +3,8 @@ import { useEffect, useRef } from "react";
 function ProfileDrawer({
   isOpen,
   onClose,
-  user,
+  userName,
+  userEmail,
   onEditProfile,
   onResetPassword,
   onLogout,
@@ -118,7 +119,7 @@ function ProfileDrawer({
             {/* User information */}
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
-                {user?.name}
+                {userName}
               </p>
 
               <p
@@ -129,7 +130,7 @@ function ProfileDrawer({
                   dark:text-slate-500
                 "
               >
-                {user?.email}
+                {userEmail}
               </p>
             </div>
           </div>
