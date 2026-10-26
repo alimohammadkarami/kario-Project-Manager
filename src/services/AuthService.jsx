@@ -44,7 +44,7 @@ export async function LoginUser(userData){
 }
 export async function ModifyFullname(fullName) {
   const token = localStorage.getItem("token");
-  const resonse = await fetch(`${API_URL}/modify-info`,{
+  const response = await fetch(`${API_URL}/modify-info`,{
     method:"PATCH",
     headers : {
       'Content-Type':'application/json',
@@ -54,7 +54,28 @@ export async function ModifyFullname(fullName) {
       fullName : fullName
     })
   });
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error (data.message || "خطایی رخ داد ");
+  }
+  return data;
+}
+export async function ModifyPassword(currentPassword , newPassword) {
+  const token = localStorage.getItem("token");
   
+  const response = await fetch(`${API_URL}/modify-pass`,{
+    method:"PATCH",
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    },
+    body:JSON.stringify({
+      CurrentPassword : currentPassword,
+      NewPassword : newPassword
+    })
+  });
+  const data = await response.json();
   if(!response.ok){
     throw new Error (data.message || "خطایی رخ داد ");
   }

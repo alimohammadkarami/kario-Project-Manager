@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ModifyPassword } from "../services/AuthService";
 
 export function ChangePasswordModal({
   isOpen,
@@ -95,17 +96,14 @@ export function ChangePasswordModal({
     try {
       setError("");
       setIsSaving(true);
-
-      await onSave({
-        currentPassword,
-        newPassword,
-      });
+      await ModifyPassword(currentPassword , newPassword)
     } catch (err) {
       setError(
         err?.message || "تغییر رمز عبور انجام نشد. دوباره تلاش کنید."
       );
     } finally {
       setIsSaving(false);
+      onClose();
     }
   };
 
