@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import AuthLayout from '../../components/auth/AuthLayout';
 import { LoginUser } from '../../services/AuthService';
+import { useloggedCheck } from '../../hooks/useAuth';
 
 
 export default function LoginPage() {
+  useloggedCheck()
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
   const [formData, setFormData] = useState({

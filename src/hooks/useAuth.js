@@ -33,3 +33,10 @@ export function useAuthCheck() {
 
   return { user, loading };
 }
+export function useloggedCheck(){
+    const token = localStorage.getItem('token');
+    if (token) {
+       window.location.href = '/';
+       return;
+    }
+}
