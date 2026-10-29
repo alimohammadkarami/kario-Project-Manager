@@ -6,6 +6,7 @@ import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import DashboardPage from './pages/test'
 import TicketsPage from './pages/Tickets/UserTickets'
+import SupportTicketArchive from './pages/Tickets/AllTickets'
 
 export default function App() {
   return (
@@ -24,7 +25,7 @@ export default function App() {
             <Route path="/tasks" element={<div>tasks</div>} />
             <Route path="/profile" element={<div></div>} />
             <Route path="/settings" element={<div>settings</div>} />
-            <Route path="/tickets" element={ <TicketsPage />} />
+            <Route path="/tickets" element={ <SupportTicketArchive />} />
             <Route path="/logout" element={<div>logout</div>} />
           </Route>
 

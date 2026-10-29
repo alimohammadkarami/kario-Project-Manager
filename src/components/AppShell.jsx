@@ -7,7 +7,7 @@ import useTheme from "../hooks/useTheme";
 import { useLocation } from "react-router-dom";
 import { DEFAULT_ACTIVE_NAV } from "../nav-items";
 import { Outlet } from "react-router-dom";
-import SupportModal from "./SupportModal";
+import SupportModal from "./tickets/SupportModal";
 import ProfileDrawer from "./ProfileDrawer";
 import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";

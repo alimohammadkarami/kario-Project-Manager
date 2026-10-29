@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { CloseIcon, HeadsetIcon } from './icons'
-import { SubmitTicket } from '../services/TicketsService'
+import { CloseIcon, HeadsetIcon } from '../icons'
+import { SubmitTicket } from '../../services/TicketsService'
 
 const EMPTY = { subject: '', description: '' }
 

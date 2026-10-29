@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SupportModal from '../SupportModal';
+import SupportModal from './SupportModal';
 
 export default function TicketList({ tickets = [] }) {
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -9,13 +9,13 @@ export default function TicketList({ tickets = [] }) {
       case 'answered':
       case 'completed':
         return (
-          <span className="inline-flex items-center rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-            {statusLabel || 'پاسخ داده شده'}
+          <span className="inline-flex items-center rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-3 py-1 text-xs font-light text-emerald-700 dark:text-emerald-400">
+            { 'تکمیل شده'}
           </span>
         );
       case 'pending':
         return (
-          <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-950/60 px-3 py-1 text-xs font-semibold text-amber-700 dark:text-amber-400">
+          <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-950/60 px-3 py-1 text-xs font-light text-amber-700 dark:text-amber-400">
             {statusLabel || 'در حال بررسی'}
           </span>
         );

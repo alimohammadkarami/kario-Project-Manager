@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TicketList from '../../components/tickets/TicketsList';
 import { GetUserTickets } from '../../services/TicketsService';
+import { useAuthCheck } from '../../hooks/useAuth';
 
 export default function TicketsPage() {
+  const { user , loading } = useAuthCheck();
+    if(!user){
+      return;
+    }uthCheck()
   const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   // استفاده از ref برای اطمینان از اینکه درخواست فقط یک بار در چرخه حیات کامپوننت ارسال می‌شود
@@ -17,14 +21,12 @@ export default function TicketsPage() {
 
     async function fetchTickets() {
       try {
-        setLoading(true);
         const response = await GetUserTickets();
         setTickets(response.data.tickets || response);
       } catch (err) {
         console.error("خطا در دریافت تیکت‌ها:", err);
         setError(err.message);
       } finally {
-        setLoading(false);
       }
     }
 
