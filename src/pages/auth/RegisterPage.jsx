@@ -43,9 +43,15 @@ export default function RegisterPage() {
         text: 'حساب کاربری با موفقیت ایجاد شد! در حال انتقال...', 
         type: 'success' 
       });
-
+    
       if (response.token) {
+        const {  email , avatarName , fullName , role} = response.data.user
         localStorage.setItem('token', response.token);
+        localStorage.setItem('email', email);
+        localStorage.setItem('fullName', fullName);
+        localStorage.setItem('avatarName', avatarName);
+        localStorage.setItem('user_role', role);
+
       }
 
       setTimeout(() => {

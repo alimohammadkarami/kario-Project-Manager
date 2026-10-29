@@ -4,12 +4,10 @@ import { GetUserTickets } from '../../services/TicketsService';
 import { useAuthCheck } from '../../hooks/useAuth';
 
 export default function TicketsPage() {
-  const { user , loading } = useAuthCheck();
-    if(!user){
-      return;
-    }uthCheck()
+  const { user, loading: authLoading } = useAuthCheck(); 
   const [tickets, setTickets] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   
   // استفاده از ref برای اطمینان از اینکه درخواست فقط یک بار در چرخه حیات کامپوننت ارسال می‌شود
   const isFetchingRef = useRef(false);
@@ -22,11 +20,14 @@ export default function TicketsPage() {
     async function fetchTickets() {
       try {
         const response = await GetUserTickets();
+        console.log("response")
         setTickets(response.data.tickets || response);
+        setLoading(false)
       } catch (err) {
         console.error("خطا در دریافت تیکت‌ها:", err);
         setError(err.message);
       } finally {
+        
       }
     }
 

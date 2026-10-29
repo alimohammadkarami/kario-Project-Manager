@@ -9,6 +9,7 @@ import TicketsPage from './pages/Tickets/UserTickets'
 import SupportTicketArchive from './pages/Tickets/AllTickets'
 
 export default function App() {
+  const userRole = localStorage.getItem("user_role");
   return (
     <div className="app">
       <Router>
@@ -25,7 +26,7 @@ export default function App() {
             <Route path="/tasks" element={<div>tasks</div>} />
             <Route path="/profile" element={<div></div>} />
             <Route path="/settings" element={<div>settings</div>} />
-            <Route path="/tickets" element={ <SupportTicketArchive />} />
+            <Route path="/tickets" element={userRole == "support" ? <SupportTicketArchive /> : <TicketsPage /> } />
             <Route path="/logout" element={<div>logout</div>} />
           </Route>
 

@@ -29,11 +29,12 @@ export default function LoginPage() {
         type: 'success' 
       });
       if (response.data) {
-        const {  email , avatarName , fullName} = response.data.user
+        const {  email , avatarName , fullName , role} = response.data.user
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('email', email);
         localStorage.setItem('fullName', fullName);
         localStorage.setItem('avatarName', avatarName);
+        localStorage.setItem('user_role', role);
       }
 
       setTimeout(() => {
