@@ -1,36 +1,39 @@
-import React, { useState } from 'react';
-import { registerUser } from '../../services/AuthService';
-import AuthLayout from '../../components/auth/AuthLayout';
-import { useloggedCheck } from '../../hooks/useAuth';
+import React, { useState } from "react";
+import { registerUser } from "../../services/AuthService";
+import AuthLayout from "../../components/auth/AuthLayout";
+import { useloggedCheck } from "../../hooks/useAuth";
 
 export default function RegisterPage() {
-  useloggedCheck()
+  useloggedCheck();
   // اضافه شدن repass به استیت فرم
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    repass: ''
+    name: "",
+    email: "",
+    password: "",
+    repass: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ text: '', type: '' });
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage({ text: '', type: '' });
+    setMessage({ text: "", type: "" });
 
     // (اختیاری) بررسی اولیه تطابق پسوردها قبل از ارسال به بک‌اند
     if (formData.password !== formData.repass) {
-      setMessage({ text: 'رمز عبور و تکرار آن با هم مطابقت ندارند.', type: 'error' });
+      setMessage({
+        text: "رمز عبور و تکرار آن با هم مطابقت ندارند.",
+        type: "error",
+      });
       setLoading(false);
       return;
     }
@@ -39,29 +42,31 @@ export default function RegisterPage() {
       // ارسال کل داده‌ها شامل password و repass به API
       const response = await registerUser(formData);
       console.log(response);
-      setMessage({ 
-        text: 'حساب کاربری با موفقیت ایجاد شد! در حال انتقال...', 
-        type: 'success' 
+      setMessage({
+        text: "حساب کاربری با موفقیت ایجاد شد! در حال انتقال...",
+        type: "success",
       });
-    
-      if (response.token) {
-        const {  email , avatarName , fullName , role} = response.data.user
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('email', email);
-        localStorage.setItem('fullName', fullName);
-        localStorage.setItem('avatarName', avatarName);
-        localStorage.setItem('user_role', role);
 
+      if (response.token) {
+        if (response.data?.token) {
+          const { token } = response.data;
+          const { email, avatarName, fullName, role } = response.data.user;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("email", email);
+          localStorage.setItem("fullName", fullName);
+          localStorage.setItem("avatarName", avatarName);
+          localStorage.setItem("user_role", role);
+        }
       }
 
       setTimeout(() => {
-        window.location.href = '/';
+        window.location.href = "/";
       }, 1500);
-
     } catch (err) {
-      setMessage({ 
-        text: err.message || 'مشکلی در ارتباط با سرور رخ داد.', 
-        type: 'error' 
+      setMessage({
+        text: err.message || "مشکلی در ارتباط با سرور رخ داد.",
+        type: "error",
       });
     } finally {
       setLoading(false);
@@ -69,9 +74,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <AuthLayout 
-      src={"src/assets/kario-brand-two.jpg"}
-    >
+    <AuthLayout src={"src/assets/kario-brand-two.jpg"}>
       <div className="space-y-2 text-right">
         <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
           ایجاد حساب کاربری
@@ -82,18 +85,22 @@ export default function RegisterPage() {
       </div>
 
       {message.text && (
-        <div className={`p-3 rounded-lg text-xs font-medium text-right transition-all duration-300 ${
-          message.type === 'success' 
-            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
-            : 'bg-rose-50 text-rose-700 border border-rose-200'
-        }`}>
+        <div
+          className={`p-3 rounded-lg text-xs font-medium text-right transition-all duration-300 ${
+            message.type === "success"
+              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+              : "bg-rose-50 text-rose-700 border border-rose-200"
+          }`}
+        >
           {message.text}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2 text-right">
-          <label className="block text-xs font-semibold text-slate-700">نام و نام خانوادگی</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            نام و نام خانوادگی
+          </label>
           <input
             type="text"
             name="name"
@@ -106,7 +113,9 @@ export default function RegisterPage() {
         </div>
 
         <div className="space-y-2 text-right">
-          <label className="block text-xs font-semibold text-slate-700">ایمیل</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            ایمیل
+          </label>
           <input
             type="email"
             name="email"
@@ -120,7 +129,9 @@ export default function RegisterPage() {
         </div>
 
         <div className="space-y-2 text-right">
-          <label className="block text-xs font-semibold text-slate-700">رمز عبور</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            رمز عبور
+          </label>
           <input
             type="password"
             name="password"
@@ -135,7 +146,9 @@ export default function RegisterPage() {
 
         {/* فیلد جدید: تکرار رمز عبور */}
         <div className="space-y-2 text-right">
-          <label className="block text-xs font-semibold text-slate-700">تکرار رمز عبور</label>
+          <label className="block text-xs font-semibold text-slate-700">
+            تکرار رمز عبور
+          </label>
           <input
             type="password"
             name="repass"
@@ -155,18 +168,35 @@ export default function RegisterPage() {
         >
           {loading ? (
             <span className="flex items-center gap-2">
-              <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                className="animate-spin h-4 w-4 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
               در حال ارسال اطلاعات...
             </span>
-          ) : 'ثبت نام'}
+          ) : (
+            "ثبت نام"
+          )}
         </button>
       </form>
 
       <div className="text-center text-xs text-slate-500 pt-2">
-        قبلاً ثبت‌نام کرده‌اید؟{' '}
+        قبلاً ثبت‌نام کرده‌اید؟{" "}
         <a href="/login" className="font-bold text-blue-600 hover:underline">
           وارد شوید
         </a>

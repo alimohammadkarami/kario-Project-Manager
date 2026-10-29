@@ -43,7 +43,7 @@ export default function LoginPage() {
 
     } catch(err){
         setMessage({
-          message: err.message || 'خطایی رخ داد ',
+          text: err.message || 'خطایی رخ داد ',
           type:'error'
         });
     } finally {

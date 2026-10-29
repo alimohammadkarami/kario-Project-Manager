@@ -107,7 +107,7 @@ export default function SupportTicketArchive() {
   return (
     <div className="w-full space-y-6 p-6" dir="rtl">
       {/* هدر بخش و فیلد جستجو */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4  md:px-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4  md:pr-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
             <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -175,6 +175,7 @@ export default function SupportTicketArchive() {
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-left">
                       <button
+                        disabled= {ticket.status == "answered" && true }
                         type="button"
                         onClick={() => setSelectedTicketForAnswer(ticket)}
                         className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition cursor-pointer"
