@@ -83,7 +83,7 @@ export default function AppShell({ children }) {
           isDark={isDark}
           onToggleTheme={toggleTheme}
           onCreateProject={handleCreateProject}
-          onOpenSupport={() => setSupportOpen(true)}
+          onOpenSupport={() => window.location.href="/tickets"}
         />
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">

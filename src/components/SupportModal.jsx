@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CloseIcon, HeadsetIcon } from './icons'
+import { SubmitTicket } from '../services/TicketsService'
 
 const EMPTY = { subject: '', description: '' }
 
@@ -46,12 +47,19 @@ export default function SupportModal({ open, onClose }) {
     setForm((current) => ({ ...current, [name]: value }))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault()
     if (!form.subject.trim() || !form.description.trim()) return
-    setSent(true)
+    try{
+      const response = await SubmitTicket(form);
+      console.log(response);
+      setSent(true);
+    }catch(err){
+      console.log(err.message);
+    }
     closeTimer.current = window.setTimeout(() => {
       onClose()
+      window.location.reload();
     }, 1100)
   }
 

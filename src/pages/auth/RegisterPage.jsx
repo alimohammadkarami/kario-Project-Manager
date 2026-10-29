@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { registerUser } from '../../services/AuthService';
 import AuthLayout from '../../components/auth/AuthLayout';
+import { useloggedCheck } from '../../hooks/useAuth';
 
 export default function RegisterPage() {
+  useloggedCheck()
   // اضافه شدن repass به استیت فرم
   const [formData, setFormData] = useState({
     name: '',
