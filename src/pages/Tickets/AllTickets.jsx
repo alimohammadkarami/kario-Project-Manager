@@ -216,6 +216,7 @@ export default function SupportTicketArchive() {
                 <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
                   <span className="font-mono">{ticket.jalaliDate}</span>
                   <button
+                    disabled= {ticket.status == "answered" && true }
                     type="button"
                     onClick={() => setSelectedTicketForAnswer(ticket)}
                     className="inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 transition"

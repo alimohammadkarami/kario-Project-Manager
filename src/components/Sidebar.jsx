@@ -45,26 +45,41 @@ export default function Sidebar({
     isCollapsed ? 'justify-center px-2' : 'justify-center px-6'
   }`}
 >
-  {!isCollapsed && <Logo />}
-
   <button
     type="button"
     onClick={() => setIsCollapsed((prev) => !prev)}
-    aria-label={
-      isCollapsed ? 'باز کردن سایدبار' : 'جمع کردن سایدبار'
-    }
-    aria-expanded={!isCollapsed}
+    aria-label={isCollapsed ? 'باز کردن سایدبار' : 'جمع کردن سایدبار'}
     title={isCollapsed ? 'باز کردن سایدبار' : 'جمع کردن سایدبار'}
-    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-brand-600 dark:text-slate-400 dark:hover:bg-white/10 ${
-      isCollapsed ? '' : 'absolute left-3'
+    className={`group relative flex items-center justify-center ${
+      isCollapsed ? 'h-10 w-10' : ''
     }`}
   >
-    <ChevronDownIcon
-      className={`h-4 w-4 transition-transform duration-300 ${
-        isCollapsed ? 'rotate-90' : '-rotate-90'
+    <span
+      className={`transition-opacity duration-200 ${
+        isCollapsed ? 'group-hover:opacity-20' : ''
       }`}
-    />
+    >
+      <Logo />
+    </span>
+
+    {isCollapsed && (
+      <span className="absolute inset-0 flex items-center justify-center rounded-lg text-slate-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100 dark:text-slate-400">
+        <ChevronDownIcon className="h-4 w-4 rotate-90" />
+      </span>
+    )}
   </button>
+
+  {!isCollapsed && (
+    <button
+      type="button"
+      onClick={() => setIsCollapsed(true)}
+      aria-label="جمع کردن سایدبار"
+      title="جمع کردن سایدبار"
+      className="absolute left-3 flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-brand-600 dark:text-slate-400 dark:hover:bg-white/10"
+    >
+      <ChevronDownIcon className="h-4 w-4 -rotate-90" />
+    </button>
+  )}
 </div>
 
 
