@@ -1,6 +1,6 @@
 import { AvatarGlyph, ChevronDownIcon, FolderIcon, MenuIcon, ProfileIcon } from "./icons";
 import { NAV_ITEMS } from "../nav-items";
-
+import Logo from './Logo'
 export default function Header({ activeNav, onOpenDrawer, onOpenProfile, userName , userEmail , profileDrawer , editModal , passModal}) {
   const activeItem = NAV_ITEMS.find((item) => item.id === activeNav);
 
@@ -42,8 +42,11 @@ export default function Header({ activeNav, onOpenDrawer, onOpenProfile, userNam
         </div>
          
         <div className="flex items-center gap-2 text-sm" dir="rtl">
-          <FolderIcon className="h-5 w-5 text-brand-600" />
-          <span className="font-medium text-slate-700 dark:text-slate-200">
+          <a href="/" className="md:hidden max-w-[40px]">
+            <Logo />
+          </a>
+          <FolderIcon className="h-5 w-5 text-brand-600 hidden md:flex" />
+          <span className="font-medium text-slate-700 hidden md:flex dark:text-slate-200">
             میز کار
           </span>
           {activeNav !== "dashboard" && (
