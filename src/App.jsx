@@ -9,6 +9,8 @@ import TicketsPage from './pages/Tickets/UserTickets'
 import SupportTicketArchive from './pages/Tickets/AllTickets'
 import Dashboard from './pages/projects/Dashboard'
 import MyProjectsPage from './pages/projects/MyProjects'
+import MyTasksPage from './pages/projects/MyTask'
+import ProjectDashboardPage from './pages/projects/ProjectDashboard'
 
 export default function App() {
   const userRole = localStorage.getItem("user_role");
@@ -25,7 +27,9 @@ export default function App() {
           <Route element={<AppShell />}>
             <Route path="/"  element={<Dashboard />} />
             <Route path="/projects" element={<MyProjectsPage />} />
-            <Route path="/tasks" element={<div>tasks</div>} />
+            // مثال در React Router
+            <Route path="/projects/:id" element={<ProjectDashboardPage/>} />
+            <Route path="/tasks" element={<MyTasksPage />} />
             <Route path="/profile" element={<div></div>} />
             <Route path="/settings" element={<div>settings</div>} />
             <Route path="/tickets" element={userRole == "support" ? <SupportTicketArchive /> : <TicketsPage /> } />

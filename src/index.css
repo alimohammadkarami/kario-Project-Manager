@@ -14,7 +14,9 @@
     transform: translateY(0) scale(1);
   }
 }
-
+*{
+  scrollbar-width: none !important;
+}
 @utility animate-profile-drawer {
   animation: profile-drawer-in 160ms ease-out;
 }
