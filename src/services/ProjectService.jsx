@@ -54,3 +54,20 @@ export async function GetProjectDetailsById(id) {
 
   return data.data;
 }
+export async function DeleteProject(id) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/${id}/`, {
+    method: 'DELETE',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    }
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'خطایی  رخ داد.');
+  }
+
+  return data.data;
+}

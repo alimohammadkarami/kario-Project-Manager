@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { GetProjectDetailsById } from "../../services/ProjectService";
+import { DeleteProject, GetProjectDetailsById } from "../../services/ProjectService";
 
 export default function ProjectDashboardPage() {
   const { id } = useParams();
@@ -9,9 +9,80 @@ export default function ProjectDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  // استیت‌های مودال ویرایش
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+  });
+  const [editError, setEditError] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
   const isFetchingRef = useRef(false);
+  // باز کردن مودال ویرایش و پر کردن فیلدها با اطلاعات فعلی پروژه
+  const handleOpenEditModal = () => {
+    setIsMenuOpen(false);
+    setEditForm({
+      title: project.title || "",
+      description: project.description || "",
+      dueDate: project.dueDate || "",
+    });
+    setEditError("");
+    setIsEditModalOpen(true);
+  };
+  // تابع ارسال فرم ویرایش (حداقل یک فیلد الزامی)
+  const handleUpdateProject = async (e) => {
+    e.preventDefault();
 
+    // بررسی اینکه حداقل یک فیلد پر شده باشد
+    if (
+      !editForm.title.trim() &&
+      !editForm.description.trim() &&
+      !editForm.dueDate.trim()
+    ) {
+      setEditError("حداقل پر کردن یکی از فیلدها الزامی است.");
+      return;
+    }
+
+    setEditError("");
+
+    try {
+      setIsUpdating(true);
+
+      // --- اینجا فانکشن سابمیت و درخواست API خود را قرار دهید ---
+      // await UpdateProject(id, editForm);
+
+      // شبیه‌سازی درخواست سرور
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      console.log("اطلاعات ویرایش‌شده:", editForm);
+
+      // بستن مودال بعد از آپدیت موفق
+      setIsEditModalOpen(false);
+    } catch (err) {
+      console.error("خطا در ویرایش پروژه:", err);
+      setEditError("خطایی در بروزرسانی پروژه رخ داد.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+  // تابع اجرای عملیات حذف پس از تایید کاربر
+  const handleDeleteProject = async () => {
+    try {
+      setIsDeleting(true);
+      
+      await DeleteProject(id);
+    
+      navigate("/");
+    } catch (err) {
+      console.error("خطا در حذف پروژه:", err);
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalOpen(false);
+    }
+  };
   // دریافت اطلاعات از API
   useEffect(() => {
     if (isFetchingRef.current) return;
@@ -149,18 +220,15 @@ export default function ProjectDashboardPage() {
               {isMenuOpen && (
                 <div className="absolute left-0 mt-2 w-36 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a1a1a] p-1.5 shadow-lg z-20 space-y-1">
                   <button
-                    onClick={() => {
-                      console.log("ویرایش پروژه");
-                      setIsMenuOpen(false);
-                    }}
+                    onClick={handleOpenEditModal}
                     className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
                   >
                     ویرایش
                   </button>
                   <button
                     onClick={() => {
-                      console.log("حذف پروژه");
                       setIsMenuOpen(false);
+                      setIsDeleteModalOpen(true); // باز کردن مودال تایید حذف
                     }}
                     className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition"
                   >
@@ -390,6 +458,227 @@ export default function ProjectDashboardPage() {
           </div>
         </div>
       </div>
+      {/* مودال تأیید حذف (Confirm Modal) */}
+      {isDeleteModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4"
+          dir="rtl"
+        >
+          <div className="w-full max-w-md rounded-2xl bg-white dark:bg-[#1a1a1a] p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400">
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
+                  حذف پروژه
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  آیا از حذف پروژه «{project.title}» اطمینان دارید؟ این عمل قابل
+                  بازگشت نیست.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                انصراف
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={handleDeleteProject}
+                className="inline-flex items-center justify-center rounded-xl bg-rose-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-rose-700 transition cursor-pointer disabled:opacity-50"
+              >
+                {isDeleting ? "در حال حذف..." : "تایید و حذف"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* مودال تأیید حذف (Confirm Modal) */}
+      {isDeleteModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4"
+          dir="rtl"
+        >
+          <div className="w-full max-w-sm rounded-2xl bg-white dark:bg-[#18181b] p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-6">
+            {/* آیکون هشدار و متن‌ها */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400">
+                <svg
+                  className="h-7 w-7"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </div>
+
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
+                  حذف پروژه
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  آیا از حذف پروژه{" "}
+                  <span className="font-semibold text-slate-700 dark:text-slate-200">
+                    «{project.title}»
+                  </span>{" "}
+                  اطمینان دارید؟ این عمل قابل بازگشت نیست.
+                </p>
+              </div>
+            </div>
+
+            {/* دکمه‌های اکشن */}
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="flex-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                انصراف
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={handleDeleteProject}
+                className="flex-1 inline-flex items-center justify-center rounded-xl bg-rose-600 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-rose-700 transition cursor-pointer disabled:opacity-50"
+              >
+                {isDeleting ? "در حال حذف..." : "تایید و حذف"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* مودال ویرایش پروژه - طراحی مینیمال، شیشه‌ای کدر و سازگار با لایت و دارک مود */}
+      {isEditModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/80 backdrop-blur-md p-4 transition-all duration-300"
+          dir="rtl"
+        >
+          <div className="w-full max-w-md rounded-3xl bg-white/90 dark:bg-[#121212]/95 backdrop-blur-2xl p-6 sm:p-8 shadow-2xl border border-slate-200/80 dark:border-white/10 space-y-6">
+            {/* هدر مینیمال مودال */}
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white tracking-wide">
+                  ویرایش پروژه
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  اطلاعات جدید پروژه را وارد کنید.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsEditModalOpen(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-800 dark:hover:text-white transition cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* فرم ویرایش */}
+            <form onSubmit={handleUpdateProject} className="space-y-4">
+              {editError && (
+                <div className="rounded-2xl bg-rose-50 dark:bg-rose-950/60 p-3.5 text-xs text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
+                  {editError}
+                </div>
+              )}
+
+              {/* فیلد عنوان */}
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">
+                  عنوان پروژه
+                </label>
+                <input
+                  type="text"
+                  value={editForm.title}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, title: e.target.value })
+                  }
+                  placeholder="مثلا: کمپین فروش کاریو"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 px-4 py-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition shadow-inner"
+                />
+              </div>
+
+              {/* فیلد توضیحات */}
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">
+                  توضیحات
+                </label>
+                <textarea
+                  rows="3"
+                  value={editForm.description}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, description: e.target.value })
+                  }
+                  placeholder="توضیحات مختصر درباره پروژه..."
+                  className="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 p-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition resize-none shadow-inner"
+                />
+              </div>
+
+              {/* فیلد تاریخ سررسید */}
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block">
+                  تاریخ سررسید
+                </label>
+                <input
+                  type="text"
+                  value={editForm.dueDate}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, dueDate: e.target.value })
+                  }
+                  placeholder="1405-04-14"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 px-4 py-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition shadow-inner"
+                />
+              </div>
+
+              {/* دکمه‌های اکشن */}
+              <div className="flex items-center gap-3 pt-4">
+                <button
+                  type="button"
+                  disabled={isUpdating}
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="flex-1 rounded-2xl border border-slate-200 dark:border-white/10 bg-transparent py-3.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition cursor-pointer"
+                >
+                  انصراف
+                </button>
+                <button
+                  type="submit"
+                  disabled={isUpdating}
+                  className="flex-1 inline-flex items-center justify-center rounded-2xl bg-blue-600 py-3.5 text-xs font-semibold text-white shadow-lg shadow-blue-600/30 hover:bg-blue-500 transition cursor-pointer disabled:opacity-50"
+                >
+                  {isUpdating ? "در حال ذخیره..." : "ذخیره تغییرات"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
