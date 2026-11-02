@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { DeleteProject, GetProjectDetailsById } from "../../services/ProjectService";
+import { DeleteProject, GetProjectDetailsById, UpdateProject } from "../../services/ProjectService";
+import CreateTaskModal from "../../components/CreateTaskModal";
 
 export default function ProjectDashboardPage() {
   const { id } = useParams();
@@ -11,6 +12,7 @@ export default function ProjectDashboardPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   // استیت‌های مودال ویرایش
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -52,14 +54,15 @@ export default function ProjectDashboardPage() {
       setIsUpdating(true);
 
       // --- اینجا فانکشن سابمیت و درخواست API خود را قرار دهید ---
-      // await UpdateProject(id, editForm);
+       await UpdateProject(id, editForm);
 
-      // شبیه‌سازی درخواست سرور
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setProject((prevProject) => ({
+        ...prevProject,
+        title: editForm.title.trim() ? editForm.title : prevProject.title,
+        description: editForm.description.trim() ? editForm.description : prevProject.description,
+        dueDate: editForm.dueDate.trim() ? editForm.dueDate : prevProject.dueDate,
+      }));
 
-      console.log("اطلاعات ویرایش‌شده:", editForm);
-
-      // بستن مودال بعد از آپدیت موفق
       setIsEditModalOpen(false);
     } catch (err) {
       console.error("خطا در ویرایش پروژه:", err);
@@ -75,7 +78,7 @@ export default function ProjectDashboardPage() {
       
       await DeleteProject(id);
     
-      navigate("/");
+      window.location.href="/projects";
     } catch (err) {
       console.error("خطا در حذف پروژه:", err);
     } finally {
@@ -84,28 +87,25 @@ export default function ProjectDashboardPage() {
     }
   };
   // دریافت اطلاعات از API
+  // تعریف تابع دریافت اطلاعات به صورت مستقل
+  const fetchProjectData = async () => {
+    try {
+      setLoading(true);
+      const response = await GetProjectDetailsById(id);
+      const projectData = response.data?.project || response.project;
+      setProject(projectData);
+    } catch (err) {
+      console.error("خطا در دریافت اطلاعات پروژه:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // فراخوانی اولیه هنگام لود صفحه
   useEffect(() => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
-
-    const fetchProjectData = async () => {
-      try {
-        setLoading(true);
-
-        // --- کد واقعی اتصال به API ---
-
-        const response = await GetProjectDetailsById(id);
-        const projectData = response.data?.project || response.project;
-        setProject(projectData);
-
-        // دیتای موقت برای تست ظاهر صفح
-      } catch (err) {
-        console.error("خطا در دریافت اطلاعات پروژه:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     if (id) {
       fetchProjectData();
@@ -390,7 +390,7 @@ export default function ProjectDashboardPage() {
             <div className="flex flex-col sm:flex-row items-center gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => console.log("ایجاد وظیفه جدید")}
+                onClick={() => setIsTaskModalOpen(true)}
                 className="w-full sm:flex-1 rounded-sm bg-blue-600 py-2.5 text-center text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition cursor-pointer"
               >
                 + ایجاد وظیفه جدید
@@ -621,7 +621,7 @@ export default function ProjectDashboardPage() {
                     setEditForm({ ...editForm, title: e.target.value })
                   }
                   placeholder="مثلا: کمپین فروش کاریو"
-                  className="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 px-4 py-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition shadow-inner"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 px-4 py-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition shadow-inner"
                 />
               </div>
 
@@ -637,7 +637,7 @@ export default function ProjectDashboardPage() {
                     setEditForm({ ...editForm, description: e.target.value })
                   }
                   placeholder="توضیحات مختصر درباره پروژه..."
-                  className="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 p-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition resize-none shadow-inner"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 p-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition resize-none shadow-inner"
                 />
               </div>
 
@@ -653,7 +653,7 @@ export default function ProjectDashboardPage() {
                     setEditForm({ ...editForm, dueDate: e.target.value })
                   }
                   placeholder="1405-04-14"
-                  className="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 px-4 py-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition shadow-inner"
+                  className="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-white/5 px-4 py-3.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition shadow-inner"
                 />
               </div>
 
@@ -663,14 +663,14 @@ export default function ProjectDashboardPage() {
                   type="button"
                   disabled={isUpdating}
                   onClick={() => setIsEditModalOpen(false)}
-                  className="flex-1 rounded-2xl border border-slate-200 dark:border-white/10 bg-transparent py-3.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition cursor-pointer"
+                  className="flex-1 rounded-lg border border-slate-200 dark:border-white/10 bg-transparent py-3.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition cursor-pointer"
                 >
                   انصراف
                 </button>
                 <button
                   type="submit"
                   disabled={isUpdating}
-                  className="flex-1 inline-flex items-center justify-center rounded-2xl bg-blue-600 py-3.5 text-xs font-semibold text-white shadow-lg shadow-blue-600/30 hover:bg-blue-500 transition cursor-pointer disabled:opacity-50"
+                  className="flex-1 inline-flex items-center justify-center rounded-lg bg-blue-600 py-3.5 text-xs font-semibold text-white shadow-lg shadow-blue-600/30 hover:bg-blue-500 transition cursor-pointer disabled:opacity-50"
                 >
                   {isUpdating ? "در حال ذخیره..." : "ذخیره تغییرات"}
                 </button>
@@ -679,6 +679,14 @@ export default function ProjectDashboardPage() {
           </div>
         </div>
       )}
+      <CreateTaskModal
+        isOpen={isTaskModalOpen}
+        onClose={() => setIsTaskModalOpen(false)}
+        projectId={id} // ارسال آیدی پروژه برای دریافت کاربران
+        onTaskCreated={() => {
+          fetchProjectData();
+        }}
+      />
     </div>
   );
 }

@@ -13,6 +13,7 @@ import EditProfileModal from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
 import CreateProjectModal from "./CreateProjectModal";
 import { ModifyFullname } from "../services/AuthService";
+import { CreateProject } from "../services/ProjectService";
 
 const CURRENT_USER = {
   name: localStorage.getItem("fullName"),
@@ -21,7 +22,7 @@ const CURRENT_USER = {
 
 export default function AppShell({ children }) {
   const [currentUser, setCurrentUser] = useState(() => {
-    return (localStorage.getItem("fullName") || "null");
+    return localStorage.getItem("fullName") || "null";
   });
   const [activeNav, setActiveNav] = useState(DEFAULT_ACTIVE_NAV);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -31,27 +32,22 @@ export default function AppShell({ children }) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  console.log(currentUser)
+  console.log(currentUser);
   const handleEditProfile = () => {
     setProfileDrawerOpen(false);
     setEditModalOpen(true);
   };
   const handleSaveProfile = async (fullName) => {
     console.log("New name:", fullName);
-    try{
+    try {
       const response = await ModifyFullname(fullName);
-    } catch(err) {
-
+    } catch (err) {
       console.log(err.message);
-
     } finally {
-
       setEditModalOpen(false);
-      localStorage.setItem("fullName" ,fullName);
+      localStorage.setItem("fullName", fullName);
       setCurrentUser(fullName);
     }
-    
-    
   };
   const handleResetPassword = () => {
     setProfileDrawerOpen(false);
@@ -60,7 +56,7 @@ export default function AppShell({ children }) {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.reload(); 
+    window.location.reload();
   };
   const location = useLocation();
   useEffect(() => {
@@ -70,10 +66,33 @@ export default function AppShell({ children }) {
     setActiveNav(currentNav);
   }, [location.pathname]);
 
-  const handleCreateProject = () => {
-      setIsCreateModalOpen(true)
+  const handleCreateProject = async (formData) => {
+    setIsCreateModalOpen(true);
+    try {
+      // نام کلیدها را دقیقاً مطابق با نیاز بک‌اند تنظیم می‌کنیم (title به جای name اگر لازم باشد)
+      const payload = {
+        title: formData.name, // نام فیلد در فرم شما projectName بود که به title تبدیل شد
+        description: formData.description,
+        dueDate: formData.dueDate, // تاریخ سررسید (مثلاً 1405-04-14)
+      };
+
+      // کال کردن سرویس ساخت پروژه
+      const response = await CreateProject(payload);
+
+      console.log("پروژه با موفقیت ساخته شد:", response);
+      setIsCreateModalOpen(false);
+      // کارهای بعدی مثل بستن مودال، رفرش لیست پروژه‌ها یا هدایت کاربر
+      // setIsOpen(false);
+      // fetchProjectsList();
+      window.location.href = "/projects";
+    } catch (error) {
+      console.error("خطا در ایجاد پروژه:", error);
+      throw new Error(
+        error.response?.data?.message || "خطایی در ساخت پروژه رخ داد.",
+      );
+    }
   };
-      
+
   return (
     <div className="min-h-screen bg-app-bg dark:bg-app-bg-dark">
       <div className="flex gap-3 p-3">
@@ -83,7 +102,7 @@ export default function AppShell({ children }) {
           isDark={isDark}
           onToggleTheme={toggleTheme}
           onCreateProject={handleCreateProject}
-          onOpenSupport={() => window.location.href="/tickets"}
+          onOpenSupport={() => (window.location.href = "/tickets")}
         />
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
@@ -116,7 +135,7 @@ export default function AppShell({ children }) {
               <ChangePasswordModal
                 isOpen={isPasswordModalOpen}
                 onClose={() => setIsPasswordModalOpen(false)}
-                onSave={(() => setIsPasswordModalOpen(false))}
+                onSave={() => setIsPasswordModalOpen(false)}
               />
             }
           />
@@ -147,7 +166,11 @@ export default function AppShell({ children }) {
       />
 
       <SupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
-      <CreateProjectModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} onSave={handleCreateProject} />
+      <CreateProjectModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={handleCreateProject}
+      />
     </div>
   );
 }

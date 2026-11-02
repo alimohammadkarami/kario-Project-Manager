@@ -54,6 +54,24 @@ export async function GetProjectDetailsById(id) {
 
   return data.data;
 }
+export async function GetProjectUsers(id) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/${id}/members`, {
+    method: 'GET',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    }
+  });
+
+  const data = await response.json();
+  console.log(data)
+  if (!response.ok) {
+    throw new Error(data.message || 'خطایی  رخ داد.');
+  }
+
+  return data;
+}
 export async function DeleteProject(id) {
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_URL}/${id}/`, {
@@ -70,4 +88,71 @@ export async function DeleteProject(id) {
   }
 
   return data.data;
+}
+export async function CreateProject(ProjectData) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/`, {
+    method: 'POST',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    },
+    body:JSON.stringify({
+      title : ProjectData.title,
+      description : ProjectData.description,
+      dueDate: ProjectData.dueDate
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(ProjectData.message || 'خطایی  رخ داد.');
+  }
+
+  return data;
+}
+export async function UpdateProject(id , ProjectData) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'PATCH',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    },
+    body:JSON.stringify({
+      title : ProjectData.title,
+      description : ProjectData.description,
+      dueDate: ProjectData.dueDate
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(ProjectData.message || 'خطایی  رخ داد.');
+  }
+
+  return ProjectData;
+}
+export async function CreateTask(id , TaskData) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/${id}/tasks`, {
+    method: 'POST',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    },
+    body:JSON.stringify({
+      title : TaskData.title,
+      description : TaskData.description,
+      dueDate: TaskData.dueDate,
+      assigneeId:TaskData.assigneeId
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(TaskData.message || 'خطایی  رخ داد.');
+  }
+
+  return TaskData;
 }

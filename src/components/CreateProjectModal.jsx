@@ -9,6 +9,7 @@ export function CreateProjectModal({
 
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState(""); // فیلد جدید تاریخ سررسید
   const [error, setError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -18,6 +19,7 @@ export function CreateProjectModal({
 
     setProjectName("");
     setDescription("");
+    setDueDate("");
     setError("");
     setIsSaving(false);
   }, [isOpen]);
@@ -59,6 +61,7 @@ export function CreateProjectModal({
 
     const trimmedName = projectName.trim();
     const trimmedDescription = description.trim();
+    const trimmedDueDate = dueDate.trim();
 
     if (!trimmedName) {
       setError("لطفاً نام پروژه را وارد کنید.");
@@ -84,6 +87,7 @@ export function CreateProjectModal({
       await onSave({
         name: trimmedName,
         description: trimmedDescription,
+        dueDate: trimmedDueDate, // ارسال تاریخ به تابع ذخیره
       });
     } catch (err) {
       setError(
@@ -270,7 +274,7 @@ export function CreateProjectModal({
                 disabled={isSaving}
                 className="
                   h-13 w-full
-                  rounded-2xl
+                  rounded-xl
                   border border-slate-200
                   bg-white/70
                   px-4
@@ -334,7 +338,7 @@ export function CreateProjectModal({
                 className="
                   min-h-[112px] w-full
                   resize-y
-                  rounded-2xl
+                  rounded-xl
                   border border-slate-200
                   bg-white/70
                   px-4 py-3.5
@@ -364,6 +368,62 @@ export function CreateProjectModal({
                 </span>
               </div>
             </div>
+
+            {/* Due Date (فیلد تاریخ سررسید) */}
+            <div>
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <label
+                  htmlFor="project-due-date"
+                  className="
+                    text-sm font-medium
+                    text-slate-700
+                    dark:text-slate-200
+                  "
+                >
+                  تاریخ سررسید
+                </label>
+
+                <span className="
+                  text-xs text-slate-400 dark:text-slate-500
+                ">
+                  اختیاری
+                </span>
+              </div>
+
+              <input
+                id="project-due-date"
+                type="text"
+                value={dueDate}
+                onChange={(event) => {
+                  setDueDate(event.target.value);
+                  if (error) setError("");
+                }}
+                placeholder="1405-04-14"
+                autoComplete="off"
+                disabled={isSaving}
+                className="
+                  h-13 w-full
+                  rounded-xl
+                  border border-slate-200
+                  bg-white/70
+                  px-4
+                  text-sm text-slate-800
+                  outline-none
+                  placeholder:text-slate-300
+                  transition-all duration-150
+
+                  focus:border-brand-400
+                  focus:ring-4 focus:ring-brand-500/10
+
+                  dark:border-white/10
+                  dark:bg-white/5
+                  dark:text-slate-100
+                  dark:placeholder:text-slate-600
+                  dark:focus:border-brand-500
+                  dark:focus:ring-brand-500/10
+                "
+              />
+            </div>
           </div>
 
           {/* Error */}
@@ -384,64 +444,6 @@ export function CreateProjectModal({
               {error}
             </p>
           )}
-
-          {/* Helpful tip */}
-          <div
-            className="
-              mt-5 flex items-start gap-3
-              rounded-2xl
-              border border-brand-100/70
-              bg-brand-50/60
-              px-4 py-3.5
-              dark:border-brand-500/10
-              dark:bg-brand-500/5
-            "
-          >
-            <div
-              className="
-                mt-0.5 flex h-7 w-7 shrink-0
-                items-center justify-center
-                rounded-lg bg-white/80
-                text-brand-600
-                dark:bg-white/5 dark:text-brand-400
-              "
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="h-4 w-4"
-                aria-hidden="true"
-              >
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="8.5"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                />
-                <path
-                  d="M12 10.5v5"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                />
-                <circle
-                  cx="12"
-                  cy="7.5"
-                  r=".8"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-
-            <p className="
-              text-xs leading-6
-              text-slate-500 dark:text-slate-400
-            ">
-              توضیحات به شما کمک می‌کند هدف و جزئیات پروژه را
-              در آینده سریع‌تر به خاطر بیاورید.
-            </p>
-          </div>
 
           {/* Actions */}
           <div className="mt-7 flex gap-2.5">
@@ -472,7 +474,7 @@ export function CreateProjectModal({
               className="
                 flex h-12 flex-[1.5] items-center
                 justify-center gap-2
-                rounded-2xl
+                rounded-xl
                 bg-brand-600 px-4
                 text-sm font-medium text-white
                 shadow-lg shadow-brand-600/15
