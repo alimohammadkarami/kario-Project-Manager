@@ -72,9 +72,44 @@ export async function GetProjectUsers(id) {
 
   return data;
 }
+export async function GetProjectTasks(id) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/${id}/tasks`, {
+    method: 'GET',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    }
+  });
+
+  const data = await response.json();
+  console.log(data)
+  if (!response.ok) {
+    throw new Error(data.message || 'خطایی  رخ داد.');
+  }
+
+  return data;
+}
 export async function DeleteProject(id) {
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_URL}/${id}/`, {
+    method: 'DELETE',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    }
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'خطایی  رخ داد.');
+  }
+
+  return data.data;
+}
+export async function DeleteTask(id) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${TASKS_URL}/${id}/`, {
     method: 'DELETE',
     headers : {
       'Content-Type':'application/json',
@@ -133,6 +168,28 @@ export async function UpdateProject(id , ProjectData) {
 
   return ProjectData;
 }
+export async function UpdateTask(id , TaskData) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${TASKS_URL}/${id}`, {
+    method: 'PATCH',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    },
+    body:JSON.stringify({
+      title : TaskData.title,
+      description : TaskData.description,
+      dueDate: TaskData.dueDate
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(ProjectData.message || 'خطایی  رخ داد.');
+  }
+
+  return data;
+}
 export async function CreateTask(id , TaskData) {
   const token = localStorage.getItem("token");
   const response = await fetch(`${API_URL}/${id}/tasks`, {
@@ -155,4 +212,25 @@ export async function CreateTask(id , TaskData) {
   }
 
   return TaskData;
+}
+
+export async function UpdateTaskStatus(id , status) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${TASKS_URL}/${id}/status`, {
+    method: 'PATCH',
+    headers : {
+      'Content-Type':'application/json',
+      authorization : `Bearer ${token}`
+    },
+    body:JSON.stringify({
+      status : status
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'خطایی  رخ داد.');
+  }
+
+  return data;
 }
