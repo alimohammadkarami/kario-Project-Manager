@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { DeleteTask, GetProjectTasks } from "../../services/ProjectService";
 import EditTaskModal from "../../components/projects/EditTaskModal";
+import { useAuthCheck } from "../../hooks/useAuth";
 
 export default function ProjectTasksPage() {
   const { projectId } = useParams();
-
+  const { user, loadings } = useAuthCheck();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
@@ -227,7 +228,7 @@ export default function ProjectTasksPage() {
                     {task.title}
                   </h3>
                   <p className="text-xs text-slate-400 dark:text-zinc-500 mt-0.5">
-                    {task.assigneeName || "مسئول تعیین نشده"}
+                    {task.assignee.fullName || "مسئول تعیین نشده"}
                   </p>
                 </div>
               </div>

@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import ProjectCard from "../../components/projects/ProjectCard"; // مسیر کامپوننت کارت پروژه
 import { CreateProject, GetAllProjects } from "../../services/ProjectService";
 import CreateProjectModal from "../../components/CreateProjectModal";
+import { useAuthCheck } from "../../hooks/useAuth";
 
 export default function MyProjectsPage() {
+  const { user, loadings } = useAuthCheck();
   const [projects, setProjects] = useState([]);
   const [archivedProjects, setArchivedProjects] = useState([]);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { GetMyTasks, UpdateTaskStatus } from "../../services/ProjectService";
+import { useAuthCheck } from "../../hooks/useAuth";
 // فرض بر این است که سرویس آپدیت وضعیت را اینجا ایمپورت می‌کنید:
 
 export default function MyTasksPage() {
@@ -7,6 +8,7 @@ export default function MyTasksPage() {
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user, loadings } = useAuthCheck();
 
   // استیت برای ردیابی تسکی که در حال آپدیت است (جهت غیرفعال کردن دکمه‌ها)
   const [updatingTaskId, setUpdatingTaskId] = useState(null);

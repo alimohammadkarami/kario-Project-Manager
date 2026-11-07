@@ -12,6 +12,7 @@ import MyProjectsPage from './pages/projects/MyProjects'
 import MyTasksPage from './pages/projects/MyTask'
 import ProjectDashboardPage from './pages/projects/ProjectDashboard'
 import ProjectTasksPage from './pages/projects/ProjectTaskList'
+import ProjectMembersPage from './pages/projects/ProjectsMember'
 
 export default function App() {
   const userRole = localStorage.getItem("user_role");
@@ -30,7 +31,8 @@ export default function App() {
             <Route path="/projects" element={<MyProjectsPage />} />
             // مثال در React Router
             <Route path="/projects/:id" element={<ProjectDashboardPage/>} />
-            <Route path="/:projectId/tasks" element={<ProjectTasksPage />} />
+            <Route path="/projects/:projectId/tasks" element={<ProjectTasksPage />} />
+            <Route path="/projects/:projectId/members" element={<ProjectMembersPage />} />
             <Route path="/tasks" element={<MyTasksPage />} />
             <Route path="/profile" element={<div></div>} />
             <Route path="/settings" element={<div>settings</div>} />

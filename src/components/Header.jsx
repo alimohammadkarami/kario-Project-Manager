@@ -6,7 +6,7 @@ export default function Header({ activeNav, onOpenDrawer, onOpenProfile, userNam
 
   return (
     <header className="relative" dir="ltr">
-      <div className="flex items-center justify-between rounded-3xl bg-white px-4 py-3 shadow-sm shadow-slate-200/60 dark:bg-surface-dark dark:shadow-none sm:px-6">
+      <div className="flex items-center justify-between rounded-xl bg-white px-4 py-3 shadow-sm shadow-slate-200/60 dark:bg-surface-dark dark:shadow-none sm:px-6">
         <div className="flex items-center gap-3" dir="rtl">
           <button
             type="button"

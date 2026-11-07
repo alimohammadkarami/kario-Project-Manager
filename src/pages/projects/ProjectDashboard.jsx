@@ -8,8 +8,10 @@ import {
 } from "../../services/ProjectService";
 import CreateTaskModal from "../../components/CreateTaskModal";
 import ProjectHeader from "../../components/projects/ProjectHeader";
+import { useAuthCheck } from "../../hooks/useAuth";
 
 export default function ProjectDashboardPage() {
+  const { user, loadings } = useAuthCheck();
   const { id } = useParams();
 
   const [project, setProject] = useState(null);
@@ -123,7 +125,7 @@ export default function ProjectDashboardPage() {
   };
 
   const handleOpenTasks = async()=>{
-    window.location.href=`/${id}/tasks`
+    window.location.href=`/projects/${id}/tasks`
   }
   // فراخوانی اولیه هنگام لود صفحه
   useEffect(() => {
@@ -346,7 +348,7 @@ export default function ProjectDashboardPage() {
               </div>
               <button
                 type="button"
-                onClick={() => console.log("مدیریت اعضا")}
+                onClick={() => window.location.href=`/projects/${id}/members`}
                 className="inline-flex items-center justify-center gap-1.5 rounded-sm bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition cursor-pointer"
               >
                 مدیریت اعضا
