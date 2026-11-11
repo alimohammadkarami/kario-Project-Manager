@@ -30,7 +30,7 @@ It provides a centralized environment where teams can manage projects, organize 
 
 Kario aims to make project management more intuitive, efficient, and accessible through a clean and modern user experience.
 
-## Features
+## Features ( MVP )
 
 - **Project Management** — Create, organize, and manage projects in one centralized workspace.
 - **Task Management** — Organize project tasks and keep track of work progress.
