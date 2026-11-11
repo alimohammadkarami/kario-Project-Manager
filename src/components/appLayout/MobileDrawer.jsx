@@ -9,8 +9,8 @@ import {
   PlusIcon,
   UserIcon,
 } from './icons'
-import { NAV_ITEMS } from '../nav-items'
-import usePersianClock from '../hooks/usePersianClock'
+import { NAV_ITEMS } from '../../nav-items'
+import usePersianClock from '../../hooks/usePersianClock'
 
 const SECONDARY_ITEMS = [
   { id: 'support', label: 'پشتیبانی', icon: HeadsetIcon }

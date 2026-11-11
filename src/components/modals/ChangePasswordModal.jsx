@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ModifyPassword } from "../services/AuthService";
+import { ModifyPassword } from "../../services/AuthService";
 
 export function ChangePasswordModal({
   isOpen,

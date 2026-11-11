@@ -1,68 +1,240 @@
-# کاریو — Project Manager App Shell
+# Kario — Project Management Platform
 
-A responsive, RTL-first page template (sidebar + header + content) built for
-a Persian project-management web app, using **React 19**, **Vite** and
-**Tailwind CSS v4** (installed as a dev dependency).
+<div align="center">
 
-## Getting started
+  <h1> KARIO </h1>
+
+  **A Smarter Way to Manage Projects & Teams.**
+
+  A modern project management platform designed to help teams organize projects, manage tasks, and collaborate more efficiently.
+
+  <br />
+
+  ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+  ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+  ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+  ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+  ![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
+  ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+
+</div>
+
+---
+
+## Overview
+
+**Kario** is a project management platform built to simplify how teams plan, organize, and manage their work.
+
+It provides a centralized environment where teams can manage projects, organize tasks, collaborate with members, and maintain better control over their workflow.
+
+Kario aims to make project management more intuitive, efficient, and accessible through a clean and modern user experience.
+
+## Features
+
+- **Project Management** — Create, organize, and manage projects in one centralized workspace.
+- **Task Management** — Organize project tasks and keep track of work progress.
+- **Team Collaboration** — Work together with team members in a shared environment.
+- **Authentication** — Secure user authentication and account management.
+- **Role Management** — Manage user roles and access permissions.
+- **Modern UI** — A clean, responsive, and user-friendly interface.
+- **Centralized Workflow** — Keep project-related activities organized and accessible.
+
+> Note: Features are subject to change as development progresses.
+
+## Tech Stack
+
+The project uses modern web technologies to provide a maintainable and scalable development environment.
+
+| Technology | Purpose |
+|---|---|
+| TypeScript | Type-safe development |
+| JavaScript (react) | Frontend development |
+| Node.js | Backend runtime |
+| Express.js | Backend framework |
+| MVC Architecture | Backend project structure |
+| REST API | Client-server communication |
+
+## Project Architecture
+
+Kario follows a modular architecture to keep the frontend and backend separated and maintainable.
+
+### Frontend
+
+The frontend is responsible for the user interface, user interactions, and communication with the backend API.
+
+### Backend (`api/`)
+
+**Important:** The `api/` directory contains the backend application.
+
+It is a separate application and must be started independently in its own terminal. Running the frontend does not automatically start the backend.
+
+The backend follows the MVC (Model-View-Controller) architectural pattern.
+
+Its main responsibilities include:
+
+- Handling HTTP requests and responses.
+- Managing authentication and authorization.
+- Processing business logic.
+- Interacting with the database.
+- Providing REST API endpoints.
+
+### Architecture Overview
+
+```text
+KARIO/
+│
+├── api/                # Backend application
+│   ├── src/
+│   │   ├── models/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   └── ...
+│   ├── package.json
+│   └── ...
+│
+├── src/                # Frontend application
+│   ├── components/
+│   ├── pages/
+│   ├── hooks/
+│   └── ...
+│
+├── package.json
+└── README.md
+```
+
+*The directory structure above is illustrative and may differ from the actual implementation.*
+
+## Getting Started
+
+Follow these instructions to set up and run Kario locally.
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- npm
+- Git
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+```
+
+Navigate to the project directory:
+
+```bash
+cd Kario
+```
+
+### 2. Install Frontend Dependencies
+
+From the project root directory:
 
 ```bash
 npm install
-npm run dev       # start the dev server
-npm run build      # production build -> dist/
-npm run preview    # preview the production build
 ```
 
-## What's included
+### 3. Install Backend Dependencies
 
-- **Header** - user menu (avatar, name, email, dropdown chevron), a
-  breadcrumb with the active section, and a soft gradient glow along the
-  bottom edge of the card, matching the reference design.
-- **Sidebar** (desktop, `lg:` and up) - wordmark logo, a live Persian
-  (Jalali) date & clock that updates every second, a "create project"
-  button, the primary nav (میز کار / پروژه‌ها / وظایف من), and a footer
-  with profile/support links plus a dark-mode switch.
-- **Bottom navigation** (below `lg:`) - the sidebar is replaced by a
-  floating, rounded navigation bar pinned to the bottom of the screen with
-  the three primary sections plus a "بیشتر" (more) button.
-- **Mobile drawer** - opened from the header's menu button or the bottom
-  nav's "بیشتر" button, it surfaces the same content as the desktop
-  sidebar (logo, clock, create button, full nav, profile/support, theme
-  toggle) so no functionality is lost on small screens.
-- **Dark mode** - a class-based (`dark:`) theme toggle, persisted to
-  `localStorage` and applied before first paint (see the inline script in
-  `index.html`) to avoid a light/dark flash on reload.
-- **Content area** - intentionally left empty; this is a layout template
-  meant to be filled in with actual pages/routes.
+Open a terminal and navigate to the `api` directory:
 
-## Project structure
-
-```
-src/
-  components/
-    icons.jsx         # shared SVG icon set (house, folder, checklist, etc.)
-    Logo.jsx           # "کاریو" wordmark
-    ThemeToggle.jsx     # dark-mode switch control
-    Sidebar.jsx          # desktop sidebar
-    Header.jsx            # top header bar
-    BottomNav.jsx          # mobile floating bottom navigation
-    MobileDrawer.jsx        # mobile slide-over (sidebar content)
-    AppShell.jsx              # composes everything + responsive behaviour
-  hooks/
-    usePersianClock.js   # live Jalali date/time
-    useTheme.js            # dark/light theme state + persistence
-  nav-items.js              # shared nav configuration
-  App.jsx
-  main.jsx
-  index.css                 # Tailwind v4 import + design tokens (@theme)
+```bash
+cd api
+npm install
 ```
 
-## Notes
+### 4. Configure Environment Variables
 
-- The typeface is **Vazirmatn**, loaded via CDN link in `index.html`. Swap
-  this for a self-hosted copy if you need to work offline.
-- Design tokens (brand blue, accent amber, backgrounds, dark surfaces) live
-  in the `@theme` block in `src/index.css` - adjust them there to re-theme
-  the whole app.
-- `activeNav` state and the "create project" handler currently live in
-  `AppShell`; wire them up to real routing/state management as needed.
+Create the required `.env` files based on the environment configuration of each application.
+
+### 5. Run the Applications
+
+**Important:** The frontend and backend must run separately in two different terminals.
+
+**Terminal 1 — Backend**
+
+```bash
+cd api
+npm run dev
+```
+
+**Terminal 2 — Frontend**
+
+From the project root:
+
+```bash
+npm run dev
+```
+Once both applications are running, open the frontend development URL displayed in your terminal.
+
+## API Modules
+
+The backend is organized into independent modules to improve maintainability and separation of concerns.
+
+| Module | Responsibility |
+|---|---|
+| Auth | Authentication and user access |
+| Projects | Project creation and management |
+| Tasks | Task management and organization |
+
+Each module follows a modular MVC structure, separating database operations, request handling, and routing responsibilities.
+
+## Development Workflow
+
+When working on Kario, keep the following guidelines in mind:
+
+1. Keep frontend and backend responsibilities separated.
+2. Follow the existing MVC architecture in the backend.
+3. Write reusable and maintainable code.
+4. Keep API responses consistent.
+5. Validate incoming data and handle errors properly.
+6. Use environment variables for sensitive configuration.
+7. Test changes before submitting them.
+
+## Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+If you want to contribute:
+
+1. Fork the repository.
+2. Create a new branch:
+
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+3. Commit your changes:
+
+   ```bash
+   git commit -m "feat: add your feature"
+   ```
+
+4. Push your branch:
+
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+5. Open a Pull Request.
+
+Please keep your contributions consistent with the existing project architecture and coding conventions.
+
+## License
+
+This project is licensed under the MIT License.
+
+See the [LICENSE](LICENSE) file for more information.
+
+---
+
+<div align="center">
+
+  **Kario — Plan Better. Work Smarter. Build Together.**
+
+  Made with ❤️ for better teamwork.
+
+</div>

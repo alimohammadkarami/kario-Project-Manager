@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { ChevronDownIcon, HeadsetIcon, PlusIcon } from "./icons";
-import { NAV_ITEMS } from "../nav-items";
-import usePersianClock from "../hooks/usePersianClock";
+import { NAV_ITEMS } from "../../nav-items";
+import usePersianClock from "../../hooks/usePersianClock";
 
 const SECONDARY_ITEMS = [
   { id: "support", label: "پشتیبانی", icon: HeadsetIcon },

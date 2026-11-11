@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { CreateTask, GetProjectUsers } from "../services/ProjectService";
+import { CreateTask, GetProjectUsers } from "../../services/ProjectService";
 
 export default function CreateTaskModal({
   isOpen,

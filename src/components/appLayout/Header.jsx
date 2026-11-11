@@ -1,5 +1,5 @@
 import { AvatarGlyph, ChevronDownIcon, FolderIcon, MenuIcon, ProfileIcon } from "./icons";
-import { NAV_ITEMS } from "../nav-items";
+import { NAV_ITEMS } from "../../nav-items";
 import Logo from './Logo'
 export default function Header({ activeNav, onOpenDrawer, onOpenProfile, userName , userEmail , profileDrawer , editModal , passModal}) {
   const activeItem = NAV_ITEMS.find((item) => item.id === activeNav);

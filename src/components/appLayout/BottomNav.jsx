@@ -1,4 +1,4 @@
-import { NAV_ITEMS } from '../nav-items'
+import { NAV_ITEMS } from '../../nav-items'
 import { GridIcon } from './icons'
 
 export default function BottomNav({ activeNav, onNavigate, onOpenDrawer, drawerOpen }) {

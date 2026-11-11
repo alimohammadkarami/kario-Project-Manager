@@ -3,17 +3,17 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import BottomNav from "./BottomNav";
 import MobileDrawer from "./MobileDrawer";
-import useTheme from "../hooks/useTheme";
+import useTheme from "../../hooks/useTheme";
 import { useLocation } from "react-router-dom";
-import { DEFAULT_ACTIVE_NAV } from "../nav-items";
+import { DEFAULT_ACTIVE_NAV } from "../../nav-items";
 import { Outlet } from "react-router-dom";
-import SupportModal from "./tickets/SupportModal";
+import SupportModal from "../tickets/SupportModal";
 import ProfileDrawer from "./ProfileDrawer";
-import EditProfileModal from "./EditProfileModal";
-import ChangePasswordModal from "./ChangePasswordModal";
-import CreateProjectModal from "./CreateProjectModal";
-import { ModifyFullname } from "../services/AuthService";
-import { CreateProject } from "../services/ProjectService";
+import EditProfileModal from "../modals/EditProfileModal";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
+import CreateProjectModal from "../modals/CreateProjectModal";
+import { ModifyFullname } from "../../services/AuthService";
+import { CreateProject } from "../../services/ProjectService";
 
 const CURRENT_USER = {
   name: localStorage.getItem("fullName"),
