@@ -42,6 +42,15 @@ export function errorHandler(err, req, res, next) {
     });
   }
 
+  // race condition: the same user was added to the same project twice at once
+  if (err.code === 'ER_DUP_ENTRY' && String(err.sqlMessage).includes('uq_project_members_project_user')) {
+    return sendError(res, {
+      statusCode: 409,
+      code: 'ALREADY_MEMBER',
+      message: 'این کاربر از قبل عضو پروژه است.',
+    });
+  }
+
   console.error(`[error] ${req.method} ${req.originalUrl}`, err);
 
   return sendError(res, {

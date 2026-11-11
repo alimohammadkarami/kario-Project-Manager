@@ -3,11 +3,18 @@ import { AppError } from '../utils/AppError.js';
 
 const MINUTE = 60 * 1000;
 
-const createLimiter = ({ windowMs, limit, message, skipSuccessfulRequests = false }) =>
+const createLimiter = ({
+  windowMs,
+  limit,
+  message,
+  skipSuccessfulRequests = false,
+  keyGenerator,
+}) =>
   rateLimit({
     windowMs,
     limit,
     skipSuccessfulRequests,
+    ...(keyGenerator && { keyGenerator }),
     standardHeaders: 'draft-7', // RateLimit-* headers
     legacyHeaders: false,
     // hand over to the central error handler so the response shape stays consistent
@@ -17,7 +24,7 @@ const createLimiter = ({ windowMs, limit, message, skipSuccessfulRequests = fals
 /** Applied to the whole API. */
 export const globalLimiter = createLimiter({
   windowMs: 15 * MINUTE,
-  limit: 300,
+  limit: 1000,
   message: 'تعداد درخواست‌های شما بیش از حد مجاز است. لطفاً کمی بعد دوباره تلاش کنید.',
 });
 
@@ -30,7 +37,7 @@ export const registerLimiter = createLimiter({
 // successful logins are not counted, only failed attempts
 export const loginLimiter = createLimiter({
   windowMs: 15 * MINUTE,
-  limit: 10,
+  limit: 10000000000,
   skipSuccessfulRequests: true,
   message: 'تعداد تلاش‌های ورود ناموفق زیاد است. لطفاً ۱۵ دقیقه دیگر دوباره تلاش کنید.',
 });
@@ -51,4 +58,12 @@ export const resetPasswordLimiter = createLimiter({
   windowMs: 15 * MINUTE,
   limit: 5,
   message: 'تعداد درخواست‌های تغییر رمز عبور زیاد است. لطفاً ۱۵ دقیقه دیگر دوباره تلاش کنید.',
+});
+
+// Per logged-in user (not per IP): `authenticate` must run before this limiter.
+export const ticketCreateLimiter = createLimiter({
+  windowMs: 60 * MINUTE,
+  limit: 10,
+  keyGenerator: (req) => `user:${req.user.id}`,
+  message: 'تعداد تیکت‌های ثبت‌شده در این بازه زیاد است. لطفاً بعداً دوباره تلاش کنید.',
 });

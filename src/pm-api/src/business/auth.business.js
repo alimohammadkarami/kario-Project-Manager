@@ -192,9 +192,21 @@ export const AuthBusiness = {
       await UserModel.updatePassword(user.id, passwordHash, conn);
     });
   },
-
+  
   async modifyInfo(userId, { fullName }) {
     await UserModel.updateName(userId, { fullName, avatarName: buildAvatarName(fullName) });
     return UserModel.findById(userId);
   },
+  async ChangePassword(userId , {CurrentPassword , NewPassword}) {
+    const current_user = await UserModel.findById(userId);
+    if(!current_user){
+      throw new AppError(404 , 'NOT FOUND' , 'کاربر مورد نظر یافت نشد ');
+    }
+    if (!(await comparePassword(CurrentPassword, current_user.password_hash))) {
+      throw new AppError("400" , 'forbidden','رمز عبور نادرست است');
+    }
+    const hashedPassword = await hashPassword(NewPassword);
+    await UserModel.updatePassword(userId , hashedPassword );
+    return UserModel.findById(userId);
+  }
 };

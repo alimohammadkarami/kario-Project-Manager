@@ -35,6 +35,10 @@ export const UserModel = {
     ]);
   },
 
+  async updateRole(id, role, conn) {
+    await executor(conn).execute('UPDATE users SET role = ? WHERE id = ?', [role, id]);
+  },
+
   async updatePassword(id, passwordHash, conn) {
     await executor(conn).execute('UPDATE users SET password_hash = ? WHERE id = ?', [
       passwordHash,

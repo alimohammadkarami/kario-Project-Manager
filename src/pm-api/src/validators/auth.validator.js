@@ -46,3 +46,7 @@ export const resetPasswordSchema = z
 export const modifyInfoSchema = z.object({
   fullName: fullNameField,
 });
+export const modifyPassSchema = z.object({
+  CurrentPassword: passwordField,
+  NewPassword: passwordField,
+});

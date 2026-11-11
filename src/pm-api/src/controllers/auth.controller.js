@@ -62,7 +62,13 @@ export const AuthController = {
       data: { user: toPublicUser(user) },
     });
   }),
-
+  modifyPassword: asyncHandler(async (req, res) => {
+    const user = await AuthBusiness.ChangePassword(req.user.id, req.body);
+    sendSuccess(res, {
+      message: 'رمز عبور  شما با موفقیت به‌روزرسانی شد.',
+      data: { user: toPublicUser(user) },
+    });
+  }),
   me: asyncHandler(async (req, res) => {
     sendSuccess(res, { data: { user: toPublicUser(req.user) } });
   }),

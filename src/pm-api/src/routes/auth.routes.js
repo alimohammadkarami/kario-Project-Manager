@@ -12,6 +12,7 @@ import { validate } from '../middlewares/validate.js';
 import {
   loginSchema,
   modifyInfoSchema,
+  modifyPassSchema,
   registerSchema,
   resetPasswordSchema,
   sendVerificationCodeSchema,
@@ -39,6 +40,8 @@ router.post(
 );
 
 router.patch('/modify-info', authenticate, validate(modifyInfoSchema), AuthController.modifyInfo);
+router.patch('/modify-pass', authenticate, validate(modifyPassSchema), AuthController.modifyPassword);
+
 router.get('/me', authenticate, AuthController.me);
 
 export default router;
